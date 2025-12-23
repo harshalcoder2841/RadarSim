@@ -61,16 +61,18 @@ DB_TO_LINEAR_FACTOR: Final[float] = 10.0
 # NATO SYMBOLOGY COLORS (MIL-STD-2525D)
 # =============================================================================
 
+
 class NATOColors:
     """NATO APP-6 / MIL-STD-2525D standard symbology colors
-    
+
     Reference: NATO STANAG 2019 Edition
     """
+
     FRIENDLY: Final[str] = "#00BFFF"  # Cyan/Light Blue
-    HOSTILE: Final[str] = "#FF4444"   # Red
-    NEUTRAL: Final[str] = "#00FF00"   # Green
-    UNKNOWN: Final[str] = "#FFFF00"   # Yellow
-    
+    HOSTILE: Final[str] = "#FF4444"  # Red
+    NEUTRAL: Final[str] = "#00FF00"  # Green
+    UNKNOWN: Final[str] = "#FFFF00"  # Yellow
+
     # UI Theme Colors (Dark Aerospace)
     BACKGROUND: Final[str] = "#111111"
     GRID: Final[str] = "#333333"

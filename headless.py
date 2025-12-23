@@ -18,8 +18,9 @@ Examples:
 """
 
 import argparse
-import sys
 import os
+import sys
+
 import yaml
 
 # Add project root to path
@@ -30,77 +31,71 @@ from src.simulation.headless_runner import HeadlessRunner, SimulationConfig
 
 def load_config_from_yaml(filepath: str) -> SimulationConfig:
     """Load configuration from YAML file."""
-    with open(filepath, 'r') as f:
+    with open(filepath, "r") as f:
         data = yaml.safe_load(f)
-    
-    radar = data.get('radar', {})
-    target = data.get('target', data.get('targets', [{}])[0] if isinstance(data.get('targets'), list) else {})
-    sim = data.get('simulation', {})
-    
+
+    radar = data.get("radar", {})
+    target = data.get(
+        "target", data.get("targets", [{}])[0] if isinstance(data.get("targets"), list) else {}
+    )
+    sim = data.get("simulation", {})
+
     return SimulationConfig(
-        frequency_hz=float(radar.get('frequency_hz', 10e9)),
-        power_watts=float(radar.get('power_watts', 100e3)),
-        antenna_gain_db=float(radar.get('antenna', {}).get('gain_db', 30)),
-        target_range_m=float(target.get('range_m', target.get('position', [50000])[0] if isinstance(target.get('position'), list) else 50000)),
-        target_rcs_m2=float(target.get('rcs_m2', 1.0)),
-        duration_s=float(sim.get('duration_s', 10)),
-        detection_threshold_db=float(sim.get('threshold_db', 13)),
+        frequency_hz=float(radar.get("frequency_hz", 10e9)),
+        power_watts=float(radar.get("power_watts", 100e3)),
+        antenna_gain_db=float(radar.get("antenna", {}).get("gain_db", 30)),
+        target_range_m=float(
+            target.get(
+                "range_m",
+                (
+                    target.get("position", [50000])[0]
+                    if isinstance(target.get("position"), list)
+                    else 50000
+                ),
+            )
+        ),
+        target_rcs_m2=float(target.get("rcs_m2", 1.0)),
+        duration_s=float(sim.get("duration_s", 10)),
+        detection_threshold_db=float(sim.get("threshold_db", 13)),
     )
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Run headless radar simulation"
-    )
-    
+    parser = argparse.ArgumentParser(description="Run headless radar simulation")
+
     # Config file
-    parser.add_argument(
-        "--config", type=str, default=None,
-        help="YAML configuration file"
-    )
-    
+    parser.add_argument("--config", type=str, default=None, help="YAML configuration file")
+
     # Target parameters
     parser.add_argument(
-        "--range", type=float, default=50.0,
-        help="Target range in km (default: 50)"
+        "--range", type=float, default=50.0, help="Target range in km (default: 50)"
     )
+    parser.add_argument("--rcs", type=float, default=1.0, help="Target RCS in m² (default: 1.0)")
     parser.add_argument(
-        "--rcs", type=float, default=1.0,
-        help="Target RCS in m² (default: 1.0)"
+        "--velocity", type=float, default=0.0, help="Target radial velocity in m/s (default: 0)"
     )
-    parser.add_argument(
-        "--velocity", type=float, default=0.0,
-        help="Target radial velocity in m/s (default: 0)"
-    )
-    
+
     # Radar parameters
     parser.add_argument(
-        "--frequency", type=float, default=10.0,
-        help="Radar frequency in GHz (default: 10)"
+        "--frequency", type=float, default=10.0, help="Radar frequency in GHz (default: 10)"
     )
     parser.add_argument(
-        "--power", type=float, default=100.0,
-        help="Transmit power in kW (default: 100)"
+        "--power", type=float, default=100.0, help="Transmit power in kW (default: 100)"
     )
-    
+
     # Simulation parameters
     parser.add_argument(
-        "--duration", type=float, default=10.0,
-        help="Simulation duration in seconds (default: 10)"
+        "--duration", type=float, default=10.0, help="Simulation duration in seconds (default: 10)"
     )
     parser.add_argument(
-        "--threshold", type=float, default=13.0,
-        help="Detection threshold in dB (default: 13)"
+        "--threshold", type=float, default=13.0, help="Detection threshold in dB (default: 13)"
     )
-    
+
     # Options
-    parser.add_argument(
-        "--quiet", action="store_true",
-        help="Suppress output"
-    )
-    
+    parser.add_argument("--quiet", action="store_true", help="Suppress output")
+
     args = parser.parse_args()
-    
+
     # Load config
     if args.config:
         if not os.path.exists(args.config):
@@ -117,7 +112,7 @@ def main():
             duration_s=args.duration,
             detection_threshold_db=args.threshold,
         )
-    
+
     if not args.quiet:
         print("=" * 60)
         print("RadarSim Headless Mode")
@@ -129,11 +124,11 @@ def main():
         print(f"Duration: {config.duration_s:.1f} s")
         print(f"Threshold: {config.detection_threshold_db:.1f} dB")
         print("=" * 60)
-    
+
     # Run simulation
     runner = HeadlessRunner(config)
     result = runner.run()
-    
+
     if not args.quiet:
         print("\n--- RESULTS ---")
         print(f"Pulses transmitted: {result.n_pulses:,}")
@@ -146,7 +141,7 @@ def main():
     else:
         # Machine-readable output
         print(f"{result.detection_ratio:.4f}")
-    
+
     return 0
 
 

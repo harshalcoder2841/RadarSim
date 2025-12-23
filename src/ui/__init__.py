@@ -11,18 +11,17 @@ Components:
     - main_window: Application shell
 """
 
-from .thread_manager import SimulationWorker, SimulationThread
-from .ppi_scope import PPIScope
 from .a_scope import AScope
-from .range_doppler import RangeDopplerScope
 from .main_window import MainWindow
+from .ppi_scope import PPIScope
+from .range_doppler import RangeDopplerScope
+from .thread_manager import SimulationThread, SimulationWorker
 
 __all__ = [
-    'SimulationWorker',
-    'SimulationThread',
-    'PPIScope',
-    'AScope',
-    'RangeDopplerScope',
-    'MainWindow',
+    "SimulationWorker",
+    "SimulationThread",
+    "PPIScope",
+    "AScope",
+    "RangeDopplerScope",
+    "MainWindow",
 ]
-

@@ -11,4 +11,4 @@ from .ambiguity_plot import AmbiguityPlot
 from .roc_curve import ROCCurveWidget
 from .snr_histogram import SNRHistogramWidget
 
-__all__ = ['AmbiguityPlot', 'ROCCurveWidget', 'SNRHistogramWidget']
+__all__ = ["AmbiguityPlot", "ROCCurveWidget", "SNRHistogramWidget"]

@@ -12,6 +12,6 @@ from .radar_controls import ControlPanel
 from .target_inspector import TargetInspector
 
 __all__ = [
-    'ControlPanel',
-    'TargetInspector',
+    "ControlPanel",
+    "TargetInspector",
 ]

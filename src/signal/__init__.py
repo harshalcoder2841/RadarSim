@@ -9,13 +9,13 @@ References:
     - Rohling, IEEE Trans. AES, 1983
 """
 
-from .waveforms import RadarWaveforms, WaveformType, BARKER_CODES
 from .cfar import CFARDetector, CFARType
+from .waveforms import BARKER_CODES, RadarWaveforms, WaveformType
 
 __all__ = [
-    'RadarWaveforms',
-    'WaveformType',
-    'BARKER_CODES',
-    'CFARDetector',
-    'CFARType',
+    "RadarWaveforms",
+    "WaveformType",
+    "BARKER_CODES",
+    "CFARDetector",
+    "CFARType",
 ]

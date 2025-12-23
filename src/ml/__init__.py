@@ -13,12 +13,12 @@ Usage:
 """
 
 from .dataset_generator import DatasetGenerator, TargetClass
-from .trainer import ModelTrainer
 from .inference_engine import InferenceEngine
+from .trainer import ModelTrainer
 
 __all__ = [
-    'DatasetGenerator',
-    'TargetClass',
-    'ModelTrainer',
-    'InferenceEngine',
+    "DatasetGenerator",
+    "TargetClass",
+    "ModelTrainer",
+    "InferenceEngine",
 ]

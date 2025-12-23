@@ -14,17 +14,22 @@ Kaynaklar:
 - Richards, "Fundamentals of Radar Signal Processing", 2nd Ed., McGraw-Hill, 2014
 """
 
-import numpy as np
-import matplotlib.pyplot as plt
 from typing import Optional
+
+import matplotlib.pyplot as plt
+import numpy as np
+
 
 class RFSpectrumAnalyzer:
     """RF Spektrum analizörü"""
+
     def __init__(self, sampling_rate=1e9, n_samples=4096):
         self.sampling_rate = sampling_rate  # Örnekleme hızı (Hz)
         self.n_samples = n_samples  # FFT uzunluğu
 
-    def generate_radar_signal(self, freq=10e9, bandwidth=20e6, pulse_length=1e-6, amplitude=1.0, lpi=False) -> np.ndarray:
+    def generate_radar_signal(
+        self, freq=10e9, bandwidth=20e6, pulse_length=1e-6, amplitude=1.0, lpi=False
+    ) -> np.ndarray:
         """
         Radar darbe sinyali üretir (isteğe bağlı LPI modlu)
         lpi=True ise frekans atlamalı veya düşük güçte sinyal üretir.
@@ -38,10 +43,12 @@ class RFSpectrumAnalyzer:
             signal = amplitude * np.exp(1j * 2 * np.pi * freq * t)
         # Darbe şekli (pencere)
         window = np.zeros_like(t)
-        window[:int(pulse_length * self.sampling_rate)] = 1.0
+        window[: int(pulse_length * self.sampling_rate)] = 1.0
         return signal * window
 
-    def generate_jammer_signal(self, freq=10e9, bandwidth=50e6, amplitude=1.0, noise=True) -> np.ndarray:
+    def generate_jammer_signal(
+        self, freq=10e9, bandwidth=50e6, amplitude=1.0, noise=True
+    ) -> np.ndarray:
         """
         Karıştırıcı (jammer) sinyali üretir
         noise=True ise beyaz gürültü, değilse dar bantlı sinyal
@@ -49,7 +56,9 @@ class RFSpectrumAnalyzer:
         t = np.arange(self.n_samples) / self.sampling_rate
         if noise:
             # Beyaz gürültü (broadband noise jammer)
-            signal = amplitude * (np.random.randn(self.n_samples) + 1j * np.random.randn(self.n_samples))
+            signal = amplitude * (
+                np.random.randn(self.n_samples) + 1j * np.random.randn(self.n_samples)
+            )
         else:
             # Dar bantlı karıştırıcı
             signal = amplitude * np.exp(1j * 2 * np.pi * freq * t)
@@ -60,11 +69,13 @@ class RFSpectrumAnalyzer:
         Sinyalin frekans spektrumunu FFT ile hesaplar
         """
         spectrum = np.fft.fftshift(np.fft.fft(signal, n=self.n_samples))
-        freq_axis = np.fft.fftshift(np.fft.fftfreq(self.n_samples, d=1/self.sampling_rate))
+        freq_axis = np.fft.fftshift(np.fft.fftfreq(self.n_samples, d=1 / self.sampling_rate))
         power_db = 20 * np.log10(np.abs(spectrum) + 1e-12)
         return freq_axis, power_db
 
-    def plot_spectrum(self, freq_axis: np.ndarray, power_db: np.ndarray, label: str = "Radar Sinyali"):
+    def plot_spectrum(
+        self, freq_axis: np.ndarray, power_db: np.ndarray, label: str = "Radar Sinyali"
+    ):
         """
         Spektrumu görselleştirir
         """
@@ -94,22 +105,23 @@ class RFSpectrumAnalyzer:
         plt.tight_layout()
         plt.show()
 
+
 # Örnek kullanım ve bilimsel açıklama:
 if __name__ == "__main__":
     analyzer = RFSpectrumAnalyzer()
     radar_signal = analyzer.generate_radar_signal(lpi=False)
     lpi_signal = analyzer.generate_radar_signal(lpi=True, amplitude=0.2)
     jammer_signal = analyzer.generate_jammer_signal(noise=True, amplitude=0.5)
-    
+
     # Tekli spektrum
     freq_axis, power_db = analyzer.compute_spectrum(radar_signal)
     analyzer.plot_spectrum(freq_axis, power_db, label="Radar Sinyali")
-    
+
     # Çoklu spektrum
     signals = {
         "Radar Sinyali": radar_signal,
         "LPI Radar": lpi_signal,
-        "Jammer (Gürültü)": jammer_signal
+        "Jammer (Gürültü)": jammer_signal,
     }
     analyzer.plot_multi_spectrum(signals)
-    print("RF spektrum modelleme tamamlandı. [Kaynak: Skolnik, 2008]") 
+    print("RF spektrum modelleme tamamlandı. [Kaynak: Skolnik, 2008]")

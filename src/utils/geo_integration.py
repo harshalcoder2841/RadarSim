@@ -14,18 +14,21 @@ Kaynaklar:
 - Skolnik, "Radar Handbook", 3rd Ed., McGraw-Hill, 2008
 """
 
-import numpy as np
-import matplotlib.pyplot as plt
-from typing import Tuple, List
 import contextlib
+from typing import List, Tuple
+
+import matplotlib.pyplot as plt
+import numpy as np
 
 try:
     import contextily as ctx  # OSM tile desteği için
 except ImportError:
     ctx = None
 
+
 class GeoConverter:
     """Coğrafi koordinat ↔ UTM ↔ simülasyon koordinatı dönüşümleri"""
+
     def __init__(self, origin_lat: float, origin_lon: float):
         self.origin_lat = origin_lat
         self.origin_lon = origin_lon
@@ -48,8 +51,10 @@ class GeoConverter:
         lon = self.origin_lon + np.degrees(dlon)
         return lat, lon
 
+
 class GeoMapVisualizer:
     """Gerçek dünya haritası üzerinde radar/füze/hedef görselleştirme"""
+
     def __init__(self, origin_lat: float, origin_lon: float, zoom: int = 14):
         self.origin_lat = origin_lat
         self.origin_lon = origin_lon
@@ -68,12 +73,14 @@ class GeoMapVisualizer:
         xs, ys = zip(*xy_points)
 
         fig, ax = plt.subplots(figsize=(10, 8))
-        ax.scatter(xs, ys, c=['g' if 'Radar' in l else 'r' if 'Hedef' in l else 'c' for l in labels], s=80)
-        for (x, y, label) in zip(xs, ys, labels):
+        ax.scatter(
+            xs, ys, c=["g" if "Radar" in l else "r" if "Hedef" in l else "c" for l in labels], s=80
+        )
+        for x, y, label in zip(xs, ys, labels):
             ax.text(x, y, label, fontsize=12)
-        ax.set_xlabel('X (m)')
-        ax.set_ylabel('Y (m)')
-        ax.set_title('Gerçek Dünya Haritasında Radar Simülasyonu')
+        ax.set_xlabel("X (m)")
+        ax.set_ylabel("Y (m)")
+        ax.set_title("Gerçek Dünya Haritasında Radar Simülasyonu")
         ax.grid(True, alpha=0.3)
 
         # OSM harita katmanı ekle (contextily varsa)
@@ -81,27 +88,31 @@ class GeoMapVisualizer:
             try:
                 # Dönüşüm: x/y -> Web Mercator (EPSG:3857)
                 import pyproj
-                proj = pyproj.Transformer.from_crs('epsg:4326', 'epsg:3857', always_xy=True)
-                xs_merc, ys_merc = proj.transform([lon for _, lon, _ in geo_points], [lat for lat, _, _ in geo_points])
-                ax.scatter(xs_merc, ys_merc, c='none')  # Sadece eksenleri ayarlamak için
-                ctx.add_basemap(ax, crs='epsg:3857', zoom=self.zoom)
+
+                proj = pyproj.Transformer.from_crs("epsg:4326", "epsg:3857", always_xy=True)
+                xs_merc, ys_merc = proj.transform(
+                    [lon for _, lon, _ in geo_points], [lat for lat, _, _ in geo_points]
+                )
+                ax.scatter(xs_merc, ys_merc, c="none")  # Sadece eksenleri ayarlamak için
+                ctx.add_basemap(ax, crs="epsg:3857", zoom=self.zoom)
             except Exception as e:
                 print(f"OSM harita katmanı eklenemedi: {e}")
 
         # DEM (yükseklik) haritası ekle
         if dem is not None:
-            ax.imshow(dem, extent=[min(xs), max(xs), min(ys), max(ys)], alpha=0.3, cmap='terrain')
+            ax.imshow(dem, extent=[min(xs), max(xs), min(ys), max(ys)], alpha=0.3, cmap="terrain")
 
         plt.tight_layout()
         plt.show()
 
+
 # Örnek kullanım ve bilimsel açıklama:
 if __name__ == "__main__":
     # Radar, hedef ve füze için örnek coğrafi koordinatlar (Ankara civarı)
-    radar_geo = (39.9208, 32.8541, 'Radar')
-    target_geo = (39.9250, 32.8600, 'Hedef')
-    missile_geo = (39.9220, 32.8580, 'Füze')
+    radar_geo = (39.9208, 32.8541, "Radar")
+    target_geo = (39.9250, 32.8600, "Hedef")
+    missile_geo = (39.9220, 32.8580, "Füze")
     geo_points = [radar_geo, target_geo, missile_geo]
     visualizer = GeoMapVisualizer(origin_lat=39.9208, origin_lon=32.8541)
     visualizer.plot_on_map(geo_points)
-    print("Gerçek dünya harita entegrasyonu tamamlandı. [Kaynak: NATO RTO-TR-SET-093, 2009]") 
+    print("Gerçek dünya harita entegrasyonu tamamlandı. [Kaynak: NATO RTO-TR-SET-093, 2009]")

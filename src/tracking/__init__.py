@@ -15,13 +15,7 @@ Example:
     >>> tracks = manager.update([(1000, 2000), (3000, 4000)], dt=0.1)
 """
 
-from .kalman import LinearKalmanFilter, KalmanState
-from .tracker import TrackManager, Track, TrackStatus
+from .kalman import KalmanState, LinearKalmanFilter
+from .tracker import Track, TrackManager, TrackStatus
 
-__all__ = [
-    'LinearKalmanFilter',
-    'KalmanState',
-    'TrackManager',
-    'Track',
-    'TrackStatus'
-]
+__all__ = ["LinearKalmanFilter", "KalmanState", "TrackManager", "Track", "TrackStatus"]
