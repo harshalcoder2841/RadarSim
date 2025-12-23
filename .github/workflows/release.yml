@@ -1,0 +1,103 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            artifact_name: RadarSim_Linux
+            asset_name: RadarSim_v${{ github.ref_name }}_Linux.tar.gz
+          - os: windows-latest
+            artifact_name: RadarSim_Windows
+            asset_name: RadarSim_v${{ github.ref_name }}_Windows.zip
+          - os: macos-latest
+            artifact_name: RadarSim_macOS
+            asset_name: RadarSim_v${{ github.ref_name }}_macOS.zip
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        pip install -r requirements.txt
+
+    - name: Build with PyInstaller
+      run: pyinstaller RadarSim.spec
+
+    - name: Package Windows
+      if: matrix.os == 'windows-latest'
+      run: |
+        cd dist
+        powershell Compress-Archive -Path RadarSim/* -DestinationPath ../${{ matrix.asset_name }}
+
+    - name: Package Linux
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        cd dist
+        tar -czvf ../${{ matrix.asset_name }} RadarSim/
+
+    - name: Package macOS
+      if: matrix.os == 'macos-latest'
+      run: |
+        cd dist
+        zip -r ../${{ matrix.asset_name }} RadarSim/
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.artifact_name }}
+        path: ${{ matrix.asset_name }}
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        merge-multiple: true
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          RadarSim_v*_Linux.tar.gz
+          RadarSim_v*_Windows.zip
+          RadarSim_v*_macOS.zip
+        name: RadarSim ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+        body: |
+          ## 🚀 RadarSim ${{ github.ref_name }} Official Release
+
+          Automated cross-platform build for Windows, Linux, and macOS.
+
+          ### 📦 Installation:
+          1. Download the archive for your operating system.
+          2. Extract the contents.
+          3. Run the `RadarSim` executable.
+
+          ---
+          *Scientifically accurate radar simulation engine.*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
